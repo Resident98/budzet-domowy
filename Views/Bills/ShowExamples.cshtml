@@ -1,0 +1,55 @@
+﻿@using budzet_domowy.Models;
+@using PagedList.Mvc;
+
+
+
+@model PagedList.IPagedList<BillModel>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "ShowExamples";
+}
+
+<h1>Rachunki</h1>
+@Html.ActionLink("Osoby", "ShowExamples", "Person", null, new { @class = "btn btn-primary btn-large" })
+@Html.ActionLink("Rachunki", "ShowExamples", "Bills", null, new { @class = "btn btn-primary btn-large" })
+
+<form action="ShowExamples" method="get">
+    <b>Ilość na stronę:</b>
+    <select id="pageSize" name="pageSize">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+    <input type="submit" value="Potwierdź" />
+</form>
+
+<table class="table table-bordered table-striped text-center">
+    <thead class="thead-dark">
+        <tr>
+            <th>@nameof(BillModel.Id)</th>
+            <th>@nameof(BillModel.Date)</th>
+            <th>@nameof(BillModel.Description)</th>
+            <th>@nameof(BillModel.Receiver)</th>
+            <th>@nameof(BillModel.Account)</th>
+            <th>@nameof(BillModel.Status)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bills in Model)
+        {
+            <tr>
+                <td>@bills.Id</td>
+                <td>@bills.Date</td>
+                <td>@bills.Description</td>
+                <td>@bills.Receiver</td>
+                <td>@bills.Account</td>
+                <td>@bills.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("ShowExamples", new { page, pageSize = Model.PageSize }))

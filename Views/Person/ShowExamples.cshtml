@@ -1,0 +1,51 @@
+﻿@using budzet_domowy.Models;
+@using PagedList.Mvc;
+
+
+@model PagedList.IPagedList<PersonModel>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "ShowExamples";
+}
+<h1>Osoby</h1>
+@Html.ActionLink("Osoby", "ShowExamples", "Person", null, new { @class = "btn btn-primary btn-large" })
+@Html.ActionLink("Rachunki", "ShowExamples", "Bills", null, new { @class = "btn btn-primary btn-large" })
+
+<form action="ShowExamples" method="get">
+    <b>Ilość na stronę:</b>
+    <select id="pageSize" name="pageSize">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+    <input type="submit" value="Potwierdź" />
+</form>
+
+<table class="table table-bordered table-striped text-center">
+    <thead class="thead-dark">
+        <tr>
+            <th>@nameof(PersonModel.Id)</th>
+            <th>@nameof(PersonModel.Name)</th>
+            <th>@nameof(PersonModel.Surname)</th>
+            <th>@nameof(PersonModel.Age)</th>
+            <th>@nameof(PersonModel.Email)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var people in Model)
+        {
+            <tr>
+                <td>@people.Id</td>
+                <td>@people.Name</td>
+                <td>@people.Surname</td>
+                <td>@people.Age</td>
+                <td>@people.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("ShowExamples", new { page, pageSize = Model.PageSize }))
